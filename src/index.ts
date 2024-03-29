@@ -1,13 +1,8 @@
 import express, { Express} from 'express';
-
 import dotenv from 'dotenv';
-// import router from './routes/index';
-// import connecDB from '../config/db';
 import connectDB from './config/db';
-// import passport from 'passport';
+import router from './routes/index';
 import cors from 'cors';
-// import jwtStrategy from '../passport-config';
-
 
 dotenv.config();
 
@@ -16,10 +11,7 @@ const port = process.env.PORT || 4000;
 
 app.use(cors())
 app.use(express.json());
-// app.use('/api', router)
-
-// app.use(passport.initialize())
-// passport.use(jwtStrategy);
+app.use('/api', router)
 
 const start = async () => {
     try {
@@ -27,7 +19,7 @@ const start = async () => {
         app.listen(port, () => {
         console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
         });
-    } catch (error:any) {
+    } catch (error:any) { 
         return error.message;
     }
 }
