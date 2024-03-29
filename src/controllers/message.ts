@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
 import axios from 'axios';
 
-const {WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PHONE_NUMBER} = process.env;
+const {GRAPH_API_TOKEN, PHONE_NUMBER} = process.env;
 
 const  incomingMsgController = async (req: Request, res: Response) => {
     console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
     // console.log(GRAPH_API_TOKEN, PHONE_NUMBER)
     const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
     if (message?.type === "text") {
-      const business_phone_number_id = PHONE_NUMBER
+      const business_phone_number_id = req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
 
       await axios({
         method: "POST",
@@ -48,7 +48,7 @@ const verifyTokenController = async(req: Request, res: Response) => {
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
 
-  if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
+  if (mode === "subscribe" && token === GRAPH_API_TOKEN) {
     res.status(200).send(challenge);
     console.log("Webhook verified successfully!");
   } else {
