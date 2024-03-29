@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import axios from 'axios';
 
-const { GRAPH_API_TOKEN, PHONE_NUMBER} = process.env;
+const {WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN, PHONE_NUMBER} = process.env;
 
 const  incomingMsgController = async (req: Request, res: Response) => {
     console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
@@ -43,4 +43,18 @@ const  incomingMsgController = async (req: Request, res: Response) => {
     res.sendStatus(200);
 }
 
-export default {incomingMsgController}
+const verifyTokenController = async(req: Request, res: Response) => {
+  const mode = req.query["hub.mode"];
+  const token = req.query["hub.verify_token"];
+  const challenge = req.query["hub.challenge"];
+
+  if (mode === "subscribe" && token === WEBHOOK_VERIFY_TOKEN) {
+    res.status(200).send(challenge);
+    console.log("Webhook verified successfully!");
+  } else {
+    res.sendStatus(403);
+  }
+}
+
+
+export default {incomingMsgController, verifyTokenController}
