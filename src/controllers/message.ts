@@ -1,46 +1,43 @@
 import { Request, Response } from 'express'
+import templateService from  "../services/messageService"
+import { templates } from '../data/message';
 import axios from 'axios';
 
-const {GRAPH_API_TOKEN, PHONE_NUMBER} = process.env;
+const {GRAPH_API_TOKEN, BEARER_TOKEN} = process.env;
+
+
+let currentStateIndex = 0; 
+let currentState = templates[currentStateIndex]; 
 
 const  incomingMsgController = async (req: Request, res: Response) => {
-    console.log("Incoming webhook message:", JSON.stringify(req.body, null, 2));
-    // console.log(GRAPH_API_TOKEN, PHONE_NUMBER)
-    const message = req.body.entry?.[0]?.changes[0]?.value?.messages?.[0];
-    if (message?.type === "text") {
-      const business_phone_number_id = req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
-
-      await axios({
-        method: "POST",
-        url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-        headers: {
-          Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-        },
-        data: {
-          messaging_product: "whatsapp",
-          to: message.from,
-          text: { body: "Echo: " + message.text.body },
-          context: {
-            message_id: message.id,
-          },
-        },
-      });
-
-      await axios({
-        method: "POST",
-        url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
-        headers: {
-          Authorization: `Bearer ${GRAPH_API_TOKEN}`,
-        },
-        data: {
-          messaging_product: "whatsapp",
-          status: "read",
-          message_id: message.id,
-        },
-      });
+  const business_phone_number_id = req.body.entry?.[0]?.changes?.[0]?.value?.metadata?.phone_number_id;
+  try {
+    const message = req?.body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+    if (!message) {
+        console.error('No message found in request body');
+        return res.sendStatus(400);
     }
-  
+    const data = templateService.templateService(message, currentState)
+
+    const headers = {
+        'Authorization': `Bearer ${BEARER_TOKEN}`,
+        'Content-Type': 'application/json'
+    };
+    const response = await axios.post(`https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`, data, { headers });
+    console.log('Message sent successfully:', response?.data);
+
+    currentStateIndex++;
+    if (currentStateIndex >= templates.length) {
+        currentStateIndex = 0;
+        currentState = templates[currentStateIndex];
+    } else {
+        currentState = templates[currentStateIndex];
+    }
     res.sendStatus(200);
+} catch (error:any) {
+    console.error('Error sending message:', error.response ? error.response.data : error.message);
+    res.sendStatus(500);
+}
 }
 
 const verifyTokenController = async(req: Request, res: Response) => {
@@ -55,6 +52,5 @@ const verifyTokenController = async(req: Request, res: Response) => {
     res.sendStatus(403);
   }
 }
-
 
 export default {incomingMsgController, verifyTokenController}
