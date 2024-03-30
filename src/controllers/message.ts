@@ -13,8 +13,19 @@ let currentStateIndex = 0;
 const  incomingMsgController = async (req: Request, res: Response) => {
 const business_phone_number_id = req.body.entry?.[0]?.changes?.[0]?.value?.metadata?.phone_number_id;
 
+
 try {
     const message = req?.body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+    // if(!userExist){
+    //   const policy =  await getPolicy({phone_number: message?.from})
+    //   if(policy == "Policy not found"){
+    //     registerPolicyService({phone_number: message?.from})
+    //     userExist = true
+    //   }
+    // }else{
+    //   userExist = true
+    // }
+
     if (!message) {
         console.error('No message found in request body');
         return res.sendStatus(400);
@@ -38,8 +49,7 @@ try {
     }
 
     currentState = templates[currentStateIndex];
-    const dt =  handleTemplate(currentState, currentState)
-    console.log(dt)
+    const dt =  handleTemplate(currentState, currentState, message?.from)
     const data = templateService.templateService(message, currentState)
     const headers = {
         'Authorization': `Bearer ${BEARER_TOKEN}`,
@@ -48,9 +58,6 @@ try {
 
     const response = await axios.post(`https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`, data, { headers });
     console.log('Message sent successfully:', response?.data.contacts[0].input);
-  //   if (nextStateIndex >= templates.length) {
-      
-  // }
     res.sendStatus(200);
 } catch (error:any) {
   console.error('Error sending message:', error.response ? error.response.data : error.message);

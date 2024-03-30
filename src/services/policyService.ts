@@ -53,3 +53,30 @@ export const registerPolicyService = async ({
     }
   };
 
+
+//   export const updatePolicy = async ({     
+//     name,
+//     brand,
+//     manufacturer,
+//     aesthetic_cover,
+//     model,
+//     address,
+//     premium,
+//     policy_number
+// }: PolicyProps) => {
+//     try {
+//       const policy = new Policy({  
+//         name,
+//         brand,
+//         manufacturer,
+//         aesthetic_cover,
+//         model,
+//         address,
+//         premium,
+//         policy_number});
+//         const user = await Policy.findOneAndUpdate({phone_number, username, email});
+//       return "Registered successfully";
+//     } catch (e: any) {
+//       return e.message;
+//     }
+//   };

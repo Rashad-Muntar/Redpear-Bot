@@ -12,4 +12,28 @@ export const getPolicyDetail = async (req: Request, res: Response) => {
     res.send({ status: "OK", data: policies });
 }
 
+export const createPolicy = async (req: Request, res: Response) => {
+    const { 
+        name,
+        brand,
+        manufacturer,
+        aesthetic_cover,
+        phone_number,
+        model,
+        address,
+        premium,
+        policy_number } = req.body;
+    const userMsg = await registerPolicyService({  
+        name,
+        brand,
+        manufacturer,
+        aesthetic_cover,
+        phone_number,
+        model,
+        address,
+        premium,
+        policy_number })
+    res.json({ data: userMsg});
+}
+
 

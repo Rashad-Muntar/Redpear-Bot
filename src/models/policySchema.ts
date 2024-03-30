@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const policySchema = new mongoose.Schema({
     name: {
         type: String,
@@ -33,6 +34,6 @@ const policySchema = new mongoose.Schema({
     }
 })
 
-const Policy = mongoose.model('Polcy', policySchema);
+const Policy = mongoose.model('Policy', policySchema);
 
 export default Policy;
