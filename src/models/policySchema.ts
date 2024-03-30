@@ -2,20 +2,34 @@ import mongoose from "mongoose";
 const policySchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+    },
+    phone_number:{
+        type: String,
+    },
+    brand: {
+        type: String,
+    },
+    manufacturer:{
+        type: String,
+    },
+    mode:{
+        type: String,
+    },
+    aesthetic_cover:{
+        type: Boolean,
+    },
+    address:{
+        type: String,
     },
     description: {
         type: String,
-        require: true,
+      
     },
     premium: {
-        type: String,
+        type: Number,
     },
-    Benefit: {
-        type: String,
-    },
-    sold:{
-        type: Boolean,
+    policy_number:{
+        type: String
     }
 })
 

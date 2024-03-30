@@ -7,5 +7,5 @@ export const templates = [
     "aesthetic_cover_request",
     "picture_request",
     "payment_request", 
-    
+    "payment_confirmation"
   ];
