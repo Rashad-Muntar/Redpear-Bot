@@ -20,11 +20,6 @@ const start = async () => {
         app.listen(port, () => {
         console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
         });
-        //  ngrok.connect(port).then(ngrokUrl => {
-        //     console.log(ngrokUrl)
-        //  }).catch(error => {
-        //    console.log(error) 
-        //  })
     } catch (error:any) { 
         return error.message;
     }
