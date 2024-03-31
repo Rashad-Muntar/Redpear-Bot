@@ -8,7 +8,7 @@ const messageSchema = new mongoose.Schema({
     responded: {
         type: Boolean,
     },
-})
+},{timestamps: true})
 
 const Message = mongoose.model('Polcy', messageSchema);
 

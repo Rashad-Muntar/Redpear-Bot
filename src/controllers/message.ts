@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import templateService from  "../services/messageService"
 import { registerPolicyService, getPolicy } from '../services/policyService';
+import { policyDetail } from '../data/message';
 import { handleTemplate } from '../utils/message';
 import { templates } from '../data/message';
 import axios from 'axios';

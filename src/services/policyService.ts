@@ -13,27 +13,28 @@ export const getPolicies = async () => {
 };
 
 export const registerPolicyService = async ({     
-    name,
+    full_name,
     brand,
     manufacturer,
     phone_number,
     aesthetic_cover,
     model,
-    address,
+    email_address,
     premium,
     policy_number
 }: PolicyProps) => {
     try {
       const user = new Policy({  
-        name,
+        full_name,
         brand,
         phone_number,
         manufacturer,
         aesthetic_cover,
         model,
-        address,
+        email_address,
         premium,
-        policy_number});
+        policy_number
+      });
       user.save();
       return "Registered successfully";
     } catch (e: any) {

@@ -9,7 +9,7 @@ router.post("/webhook", messageController.incomingMsgController);
 router.get("/webhook", messageController.verifyTokenController);
 router.get("/policy/phone_number", getPolicyDetail);
 router.get("/policies", getAllPolicies);
-router.post("/createPolicy", createPolicy)
+router.post("/newPolicy", createPolicy)
 
 
 export default router;

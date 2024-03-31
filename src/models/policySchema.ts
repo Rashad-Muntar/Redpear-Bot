@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const policySchema = new mongoose.Schema({
-    name: {
+    full_name: {
         type: String,
     },
     phone_number:{
@@ -13,13 +13,13 @@ const policySchema = new mongoose.Schema({
     manufacturer:{
         type: String,
     },
-    mode:{
+    model:{
         type: String,
     },
     aesthetic_cover:{
         type: Boolean,
     },
-    address:{
+    email_address:{
         type: String,
     },
     description: {
@@ -32,7 +32,7 @@ const policySchema = new mongoose.Schema({
     policy_number:{
         type: String
     }
-})
+},{timestamps: true})
 
 const Policy = mongoose.model('Policy', policySchema);
 

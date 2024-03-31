@@ -9,3 +9,13 @@ export const templates = [
     "payment_request", 
     "payment_confirmation"
   ];
+export let policyDetail = {
+    name: "",
+    brand:"",
+    manufacturer: "",
+    aesthetic_cover: false,
+    model:"",
+    address: "",
+    premium: 0,
+    policy_number: ""
+} 

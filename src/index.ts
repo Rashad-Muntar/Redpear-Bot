@@ -16,10 +16,10 @@ app.use('/api', router)
 
 const start = async () => {
     try {
-        await connectDB();
         app.listen(port, () => {
         console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
         });
+        await connectDB();
     } catch (error:any) { 
         return error.message;
     }
