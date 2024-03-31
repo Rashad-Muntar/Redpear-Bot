@@ -3,7 +3,7 @@ import { PolicyProps } from "../types";
 
 type GetUserProps = Pick<PolicyProps, "phone_number">;
 
-export const getPolicies = async () => {
+export const getPoliciesService = async () => {
     try {
       const policies = await Policy.find();
       return policies;
@@ -42,7 +42,7 @@ export const registerPolicyService = async ({
     }
   };
 
- export const getPolicy = async ({ phone_number }: GetUserProps) => {
+ export const getPolicyService = async ({ phone_number }: GetUserProps) => {
     try {
       const policy = await Policy.findOne({ phone_number: phone_number});
       if (!policy) {
