@@ -1,7 +1,7 @@
 import Policy from "../models/policySchema";
 import { PolicyProps } from "../types";
 
-type GetUserProps = Pick<PolicyProps, "phone_number">;
+type GetUserProps = Pick<PolicyProps, "id">;
 
 export const getPoliciesService = async () => {
     try {
@@ -42,9 +42,9 @@ export const registerPolicyService = async ({
     }
   };
 
- export const getPolicyService = async ({ phone_number }: GetUserProps) => {
+ export const getPolicyService = async ({ id }: GetUserProps) => {
     try {
-      const policy = await Policy.findOne({ phone_number: phone_number});
+      const policy =  await Policy.findById(id)
       if (!policy) {
         return "Policy not found";
       }

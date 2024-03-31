@@ -7,9 +7,9 @@ export const getPolicies = async (req: Request, res: Response) => {
 }
 
 export const getPolicy = async (req: Request, res: Response) => {
-    const {phone_number} = req.params;
-    const policies = await getPolicyService({phone_number});
-    res.send({ status: "OK", data: policies });
+    const {id} = req.body;
+    const policy = await getPolicyService({id});
+    res.json({ data: policy});
 }
 
 export const createPolicy = async (req: Request, res: Response) => {

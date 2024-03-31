@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("/webhook", messageController.incomingMsgController);
 router.get("/webhook", messageController.verifyTokenController);
-router.get("/policy/phone_number", getPolicy);
+router.get("/policy", getPolicy);
 router.get("/policies", getPolicies);
 router.post("/newPolicy", createPolicy)
 

@@ -1,4 +1,5 @@
 export interface PolicyProps {
+    id?: string
     full_name?: string,
     brand?: string,
     manufacturer?: string,
