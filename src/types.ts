@@ -11,3 +11,21 @@ export interface PolicyProps {
     policy_number?:string
   }
 
+  export interface TemplateProps {
+    name: string;
+    language: {
+        code: string;
+    };
+    variables?: any;
+    buttons?: any[];
+    text:string
+}
+
+export interface CustomTemplateProps {
+    messaging_product: string;
+    to: string;
+    type: string;
+    template: TemplateProps;
+    
+}
+

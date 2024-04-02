@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import templateService from  "../services/messageService"
+import {templateService} from  "../services/messageService"
 import { registerPolicyService, getPoliciesService } from '../services/policyService';
 import { policyDetail } from '../data/message';
 import { handleTemplate } from '../utils/message';
@@ -17,15 +17,6 @@ const business_phone_number_id = req.body.entry?.[0]?.changes?.[0]?.value?.metad
 
 try {
     const message = req?.body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
-    // if(!userExist){
-    //   const policy =  await getPolicy({phone_number: message?.from})
-    //   if(policy == "Policy not found"){
-    //     registerPolicyService({phone_number: message?.from})
-    //     userExist = true
-    //   }
-    // }else{
-    //   userExist = true
-    // }
 
     if (!message) {
         console.error('No message found in request body');
@@ -51,7 +42,7 @@ try {
 
     currentState = templates[currentStateIndex];
     const dt =  handleTemplate(currentState, currentState, message?.from)
-    const data = templateService.templateService(message, currentState)
+    const data = templateService(message, currentState)
     const headers = {
         'Authorization': `Bearer ${BEARER_TOKEN}`,
         'Content-Type': 'application/json'
