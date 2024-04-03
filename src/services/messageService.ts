@@ -116,7 +116,7 @@ export const messageService = async (message:any, business_number_id:number) => 
             const value = message?.text?.body.trim();
             if(value === "1" || value === "Yes" || value === "yes"){
                 newValue = initialPremium+50
-                variables = [newValue, 'google.com'];
+                variables = [newValue, 'https://paystack.com/pay/264ja7n01r'];
                 valueToSave=true
             }else{
                 variables = [initialPremium, 'google.com'];
