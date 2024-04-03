@@ -27,7 +27,7 @@ _Base URL_: `http://localhost:4000/api`
 |Description|Method|Endpoint|
 |:---|:---|:---|
 
-To interact with the chatbot you need to send a what message to this test number "+1 555 029 5257"
+To interact with the chatbot you need to send a what message with  ###`Hi` to this test number "+1 555 029 5257"
 ### Usage
 
 At this point, you now have everything you need to properly run the program (source code, node.js, mongodb, typescript). If not, refer back to the setup section of this documentation.
