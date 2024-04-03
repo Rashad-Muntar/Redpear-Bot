@@ -1,14 +1,18 @@
 import { messages } from "../data/message";
 import { generateMsg } from "../utils/message";
-import { getPolicyByPhoneNumberService } from "./policyService";
+import { createPolicyService } from "./policyService";
+import { checkExist } from "../utils/message";
 import axios from "axios";
 
 const processedMessages = new Set<string>();
+let isUserChecked: boolean
 let messageSent:string;
 let data:any;
 let userNumber:string
+
 let policyDetail: { 
     full_name: string
+    phone_number: string
     email: string
     brand: string
     model: string
@@ -21,6 +25,7 @@ let policyDetail: {
     email: '',
     brand: '',
     model: '',
+    phone_number: '',
     year: '',
     extraCover: false,
     picture: '',
@@ -28,7 +33,7 @@ let policyDetail: {
 
 };
 
-const {GRAPH_API_TOKEN, BEARER_TOKEN} = process.env;
+const {BEARER_TOKEN} = process.env;
 
 export const templateService = (message:any, currentState:string) => {
     try {
@@ -53,7 +58,18 @@ export const messageService = async (message:any, business_number_id:number) => 
    
     userNumber = message?.from
     try {
-  
+        console.log(isUserChecked)
+        if(!isUserChecked){
+            const userExist  = await checkExist(message?.from)
+            console.log(userExist)
+            if(!userExist){
+              const policy = await createPolicyService({phone_number: message?.from})
+              console.log(policy)
+            }
+            isUserChecked = true
+        }
+
+     
         if (processedMessages.has(message.from)) {
             return
         }

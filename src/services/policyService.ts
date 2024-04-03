@@ -12,7 +12,7 @@ export const getPoliciesService = async () => {
     }
 };
 
-export const registerPolicyService = async ({     
+export const createPolicyService = async ({     
     full_name,
     brand,
     manufacturer,
@@ -35,7 +35,7 @@ export const registerPolicyService = async ({
         premium,
         policy_number
       });
-      user.save();
+     await user.save();
       return "Registered successfully";
     } catch (e: any) {
       return e.message;

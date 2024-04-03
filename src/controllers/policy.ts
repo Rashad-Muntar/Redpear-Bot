@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getPolicyService, registerPolicyService, getPoliciesService } from '../services/policyService';
+import { getPolicyService, createPolicyService, getPoliciesService } from '../services/policyService';
 
 export const getPolicies = async (req: Request, res: Response) => {
     const policies = await getPoliciesService();
@@ -23,7 +23,7 @@ export const createPolicy = async (req: Request, res: Response) => {
         email_address,
         premium,
         policy_number } = req.body;
-    const policy = await registerPolicyService({  
+    const policy = await createPolicyService({  
         full_name,
         brand,
         manufacturer,
