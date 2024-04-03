@@ -16,7 +16,7 @@ export const createPolicy = async (req: Request, res: Response) => {
     const { 
         full_name,
         brand,
-        manufacturer,
+        year,
         aesthetic_cover,
         phone_number,
         model,
@@ -26,7 +26,7 @@ export const createPolicy = async (req: Request, res: Response) => {
     const policy = await createPolicyService({  
         full_name,
         brand,
-        manufacturer,
+        year,
         aesthetic_cover,
         phone_number,
         model,

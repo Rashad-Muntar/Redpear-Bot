@@ -1,6 +1,6 @@
 import { messages } from "../data/message";
 import { generateMsg } from "../utils/message";
-import { createPolicyService } from "./policyService";
+import { createPolicyService, updatePolicyService } from "./policyService";
 import { checkExist } from "../utils/message";
 import axios from "axios";
 
@@ -9,6 +9,9 @@ let isUserChecked: boolean
 let messageSent:string;
 let data:any;
 let userNumber:string
+let newValue:number;
+let variables:any
+const initialPremium = 100
 
 let policyDetail: { 
     full_name: string
@@ -20,6 +23,7 @@ let policyDetail: {
     extraCover: boolean
     picture: string
     premium: number
+    policy_number: string
 } = { 
     full_name: '', 
     email: '',
@@ -29,7 +33,8 @@ let policyDetail: {
     year: '',
     extraCover: false,
     picture: '',
-    premium: 0
+    premium: 0,
+    policy_number:''
 
 };
 
@@ -91,7 +96,9 @@ export const messageService = async (message:any, business_number_id:number) => 
             }
         } else if (messageSent === messages.email.name) {
             data = generateMsg(message, messages.brand.text);
+            messageSent = messages.brand.name;
             policyDetail.email = message?.text?.body
+            
         } else if (messageSent === messages.brand.name) {
             data = generateMsg(message, messages.model.text);
             messageSent = messages.model.name;
@@ -105,23 +112,43 @@ export const messageService = async (message:any, business_number_id:number) => 
             messageSent = messages.extraCover.name;
             policyDetail.year = message?.text?.body
         } else if (messageSent === messages.extraCover.name) {
+            let valueToSave: boolean
+            const value = message?.text?.body.trim();
+            if(value === "1" || value === "Yes" || value === "yes"){
+                newValue = initialPremium+50
+                variables = [newValue, 'google.com'];
+                valueToSave=true
+            }else{
+                variables = [initialPremium, 'google.com'];
+                valueToSave=false
+            }
             data = generateMsg(message, messages.picture.text);
             messageSent = messages.picture.name;
-            policyDetail.extraCover = message?.text?.body
+            policyDetail.extraCover = valueToSave
+            
         } else if (messageSent === messages.picture.name) {
-            const variables = ['150', 'google.com'];
             data = generateMsg(message, messages.premium.text, variables);
             messageSent = messages.premium.name;
-            policyDetail.premium = message?.text?.body
+            policyDetail.premium = newValue
         }else if (messageSent === messages.premium.name) {
             const variables = ['Rashad', '1st March 2024', '1st March 2024', '001'];
             data = generateMsg(message, messages.summary.text, variables);
             messageSent = messages.summary.name;
         }else {
-            console.log("Done");
+            const data = await updatePolicyService({
+                full_name: policyDetail.full_name,
+                phone_number: message?.from,
+                brand: policyDetail.brand,
+                year: policyDetail.year,
+                model: policyDetail.model,
+                aesthetic_cover: policyDetail.extraCover,
+                email_address: policyDetail.email,
+                premium: policyDetail.premium,
+                policy_number: policyDetail.policy_number
+            })
+            console.log("From Service  == ", data)
         }
-
-        console.log(policyDetail)
+       
         const headers = {
             'Authorization': `Bearer ${BEARER_TOKEN}`,
             'Content-Type': 'application/json'

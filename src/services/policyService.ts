@@ -15,7 +15,7 @@ export const getPoliciesService = async () => {
 export const createPolicyService = async ({     
     full_name,
     brand,
-    manufacturer,
+    year,
     phone_number,
     aesthetic_cover,
     model,
@@ -28,7 +28,7 @@ export const createPolicyService = async ({
         full_name,
         brand,
         phone_number,
-        manufacturer,
+        year,
         aesthetic_cover,
         model,
         email_address,
@@ -67,29 +67,33 @@ export const createPolicyService = async ({
   };
 
 
-//   export const updatePolicy = async ({     
-//     name,
-//     brand,
-//     manufacturer,
-//     aesthetic_cover,
-//     model,
-//     address,
-//     premium,
-//     policy_number
-// }: PolicyProps) => {
-//     try {
-//       const policy = new Policy({  
-//         name,
-//         brand,
-//         manufacturer,
-//         aesthetic_cover,
-//         model,
-//         address,
-//         premium,
-//         policy_number});
-//         const user = await Policy.findOneAndUpdate({phone_number, username, email});
-//       return "Registered successfully";
-//     } catch (e: any) {
-//       return e.message;
-//     }
-//   };
+  export const updatePolicyService = async ({     
+    full_name,
+    brand,
+    year,
+    phone_number,
+    aesthetic_cover,
+    model,
+    email_address,
+    premium,
+    policy_number
+}: PolicyProps) => {
+    try {
+      const policy = {  
+        full_name,
+        brand,
+        year,
+        phone_number,
+        aesthetic_cover,
+        model,
+        email_address,
+        premium,
+        policy_number};
+        console.log(phone_number)
+         const data = await Policy.findOneAndUpdate({phone_number: phone_number}, policy);
+         console.log("from mainfunc = ", data)
+      return "updated successfully";
+    } catch (e: any) {
+      return e.message;
+    }
+  };

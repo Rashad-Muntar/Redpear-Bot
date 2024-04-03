@@ -10,7 +10,7 @@ const policySchema = new mongoose.Schema({
     brand: {
         type: String,
     },
-    manufacturer:{
+    year:{
         type: String,
     },
     model:{

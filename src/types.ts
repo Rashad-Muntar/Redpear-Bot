@@ -2,7 +2,7 @@ export interface PolicyProps {
     id?: string
     full_name?: string,
     brand?: string,
-    manufacturer?: string,
+    year?: string,
     aesthetic_cover?: boolean,
     phone_number?:string,
     model?: string,
