@@ -1,15 +1,18 @@
 import Policy from "../models/policySchema";
+import { messages } from "../data/message";
+
 import { CustomTemplateProps, TemplateProps } from "../types";
-let policyDetail = {
-    name: "",
-    brand:"",
-    manufacturer: "",
-    aesthetic_cover: false,
-    model:"",
-    address: "",
-    premium: 0,
-    policy_number: ""
-} 
+
+
+interface PolicyDetail {
+    full_name?: string;
+    email?: string;
+    brand?: string;
+    model?: string;
+    year?: string;
+    extraCover?: string;
+    premium?: string;
+}
 
 export const handleTemplate = async (message:any, template:string, phone_number: string) => {
     try {
@@ -49,44 +52,11 @@ export const handleTemplate = async (message:any, template:string, phone_number:
     }
 };
 
-
-
-// const createCustomTemplate = async (message:any, currentState:string) => {
-//     try {
-//         let customTemplate;
-
-//         switch (currentState) {
-//             case "name_request":
-//                 // Customize template for name request
-//                 customTemplate = createNameRequestTemplate(message);
-//                 break;
-//             case "address_request":
-//                 // Customize template for address request
-//                 customTemplate = createAddressRequestTemplate(message);
-//                 break;
-//             case "brand_request":
-//                 // Customize template for brand request
-//                 customTemplate = createBrandRequestTemplate(message);
-//                 break;
-//             // Add cases for other template types as needed
-
-//             default:
-//                 // Handle default case or unrecognized template names
-//                 console.error("Unrecognized template name:", currentState);
-//                 customTemplate = null;
-//                 break;
-//         }
-
-//         return customTemplate;
-//     } catch (error:any) {
-//         return error.message;
-//     }
-// };
 type GetTemplateProps = Pick<TemplateProps,  "buttons" | "text">;
 
 export const createTemplate = (message:any, templateName:string, options: GetTemplateProps) => {
     const { buttons, text } = options;
-
+   
     // Customize template structure
     const customTemplate: CustomTemplateProps = {
         messaging_product: 'whatsapp',
@@ -102,17 +72,92 @@ export const createTemplate = (message:any, templateName:string, options: GetTem
         }
     };
 
-    // // Add variables to template if provided
-    // if (variables) {
-    //     customTemplate.template.variables = variables;
-    // }
-
-    // // Add buttons to template if provided
-    // if (buttons) {
-    //     customTemplate.template.buttons = buttons;
-    // }
-
     return customTemplate;
 };
+
+export const generateMsg = (message: any, messageItem: string, variables?: string[]) => {
+    console.log(messageItem);
+    let formattedMessage = messageItem;
+    
+    if (variables) {
+        variables.forEach((value, index) => {
+            const placeholder = `{{${index + 1}}}`;
+            formattedMessage = formattedMessage.replace(placeholder, value);
+        });
+    }
+
+    const customMessage = {
+        messaging_product: "whatsapp",
+        recipient_type: "individual",
+        to: message && message?.from,
+        type: "text",
+        text: {
+            preview_url: false,
+            body: formattedMessage
+        }
+    };
+    return customMessage;
+};
+
+
+export const messageEngine = (message:any) => {
+    let messageSent = '';
+    const policyDetail: PolicyDetail = {};
+    let data
+   
+    switch (messageSent) {
+        case '':
+            if (message.text.body === "Hi") {
+                data = generateMsg(message, messages.welcome.text);
+                messageSent = messages.welcome.name;
+            }
+            break;
+        case messages.welcome.name:
+            data = generateMsg(message, messages.email.text);
+            messageSent = messages.email.name;
+            policyDetail.full_name = message?.text?.body;
+            break;
+        case messages.email.name:
+            data = generateMsg(message, messages.brand.text);
+            messageSent = messages.brand.name;
+            policyDetail.email = message?.text?.body;
+            break;
+        case messages.brand.name:
+            data = generateMsg(message, messages.model.text);
+            messageSent = messages.model.name;
+            policyDetail.brand = message?.text?.body;
+            break;
+        case messages.model.name:
+            data = generateMsg(message, messages.year.text);
+            messageSent = messages.year.name;
+            policyDetail.model = message?.text?.body;
+            break;
+        case messages.year.name:
+            data = generateMsg(message, messages.extraCover.text);
+            messageSent = messages.extraCover.name;
+            policyDetail.year = message?.text?.body;
+            break;
+        case messages.extraCover.name:
+            data = generateMsg(message, messages.picture.text);
+            messageSent = messages.picture.name;
+            policyDetail.extraCover = message?.text?.body;
+            break;
+        case messages.picture.name:
+            const variables = ['150', 'google.com'];
+            data = generateMsg(message, messages.premium.text, variables);
+            messageSent = messages.premium.name;
+            policyDetail.premium = message?.text?.body;
+            break;
+        case messages.premium.name:
+            const summaryVariables = ['Rashad', '1st March 2024', '1st March 2024', '001'];
+            data = generateMsg(message, messages.summary.text, summaryVariables);
+            messageSent = messages.summary.name;
+            break;
+        default:
+            console.log("Done");
+            break;
+    }
+    return data
+}
 
 

@@ -1,5 +1,4 @@
 import express, { Express} from 'express';
-import ngrok from "ngrok"
 import dotenv from 'dotenv';
 import connectDB from './config/db';
 import router from './routes/index';

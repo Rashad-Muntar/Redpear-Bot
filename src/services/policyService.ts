@@ -54,6 +54,18 @@ export const registerPolicyService = async ({
     }
   };
 
+  export const getPolicyByPhoneNumberService = async (number:string) => {
+    try {
+      const policy =  await Policy.findOne({phone_number: number})
+      if (!policy) {
+        return false
+      }
+      return true
+    } catch (e: any) {
+      return e.message;
+    }
+  };
+
 
 //   export const updatePolicy = async ({     
 //     name,
