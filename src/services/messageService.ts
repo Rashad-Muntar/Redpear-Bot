@@ -79,7 +79,7 @@ export const messageService = async (message:any, business_number_id:number) => 
             return
         }
 
-        if (message.text.body === "Hi") {
+        if (message.text.body === "Hi" || message.text.body === "hi" || message.text.body === "HI") {
             data = generateMsg(message, messages.welcome.text);
             messageSent = messages.welcome.name;
         } else if (messageSent === messages.welcome.name) {
@@ -134,8 +134,7 @@ export const messageService = async (message:any, business_number_id:number) => 
             const variables = ['Rashad', '1st March 2024', '1st March 2024', '001'];
             data = generateMsg(message, messages.summary.text, variables);
             messageSent = messages.summary.name;
-        }else {
-            const data = await updatePolicyService({
+            await updatePolicyService({
                 full_name: policyDetail.full_name,
                 phone_number: message?.from,
                 brand: policyDetail.brand,
@@ -146,7 +145,8 @@ export const messageService = async (message:any, business_number_id:number) => 
                 premium: policyDetail.premium,
                 policy_number: policyDetail.policy_number
             })
-            console.log("From Service  == ", data)
+        }else {
+            console.log("Wrong input")
         }
        
         const headers = {
